@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generador de Números Aleatorios</title>
+</head>
+
+<body>
+    <script>
+        // Definir la función numeroAleatorio
+        const numeroAleatorio = (maximo) => {
+            // Generar un número aleatorio entre 0 (incluido) y maximo (excluido)
+            const numero = Math.floor(Math.random() * maximo);
+            return numero;
+        };
+
+        // Crear un array para almacenar los premios
+        let premios = [];
+
+        // Calcular 10 premios distintos y agregarlos al array
+        for (let i = 0; i < 10; i++) {
+            let premio = numeroAleatorio(100000); // Genera un número aleatorio entre 0 y 99999
+            premios.push(premio);
+        }
+
+        // Recorrer el array de premios y mostrar cada uno en un elemento de alert
+        premios.forEach((premio, index) => {
+            alert(`Premio ${index + 1}: ${premio}`);
+        });
+    </script>
+</body>
+
+</html>

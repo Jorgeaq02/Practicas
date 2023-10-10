@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Coches</title>
+   <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Precio</th>
+                <th>Año de Matriculación</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody id="coches-table-body"></tbody>
+    </table>
+
+    <script type="text/JavaScript">
+        // Definir la clase Coche
+        class Coche {
+            constructor(marca, modelo, precio, anoMatriculacion, urlFoto) {
+                this.marca = marca;
+                this.modelo = modelo;
+                this.precio = precio;
+                this.anoMatriculacion = anoMatriculacion;
+                this.urlFoto = urlFoto;
+            }
+        }
+
+        // Crear instancias de objetos Coche
+        const coche1 = new Coche("Toyota", "Corolla", 25000, 2020, "img/Toyota_Corolla 2020.png");
+        const coche2 = new Coche("Honda", "Civic", 22000, 2019, "img/Honda_Civic.png");
+        const coche3 = new Coche("Ford", "Mustang", 45000, 2021, "img/Ford_Mustang.png");
+        const coche4 = new Coche("Chevrolet", "Camaro", 42000, 2022, "img/Chevrolet_Camaro.png");
+        const coche5 = new Coche("Nissan", "Altima", 28000, 2020, "img/Nissan_Altima.png");
+
+        // Crear un array llamado listaCoches y agregar las instancias de coche
+        const listaCoches = [coche1, coche2, coche3, coche4, coche5];
+
+        // Obtener el cuerpo de la tabla en el HTML
+        const cochesTableBody = document.getElementById('coches-table-body');
+
+        // Recorrer el array y mostrar cada coche en la tabla
+        listaCoches.forEach((coche) => {
+            // Crear una fila de tabla para cada coche
+            const cocheRow = document.createElement('tr');
+
+            // Agregar contenido a la fila de tabla del coche
+            cocheRow.innerHTML = `
+                <td>${coche.marca}</td>
+                <td>${coche.modelo}</td>
+                <td>${coche.precio}€</td>
+                <td>${coche.anoMatriculacion}</td>
+                <td><img src="${coche.urlFoto}" alt="${coche.marca} ${coche.modelo}"></td>
+            `;
+
+            // Agregar la fila de tabla del coche al cuerpo de la tabla
+            cochesTableBody.appendChild(cocheRow);
+        });
+    </script>
+</body>
+
+</html>

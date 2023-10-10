@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02-coches</title>
+</head>
+
+<body>
+    <script type="text/JavaScript">
+        // Definir la clase Coche
+class Coche {
+  constructor(marca, modelo, precio, anoMatriculacion, urlFoto) {
+    this.marca = marca;
+    this.modelo = modelo;
+    this.precio = precio;
+    this.anoMatriculacion = anoMatriculacion;
+    this.urlFoto = urlFoto;
+  }
+}
+
+// Crear instancias de objetos Coche
+const coche1 = new Coche("Toyota", "Corolla", 25000, 2020, "img/Toyota_Corolla.png");
+const coche2 = new Coche("Honda", "Civic", 22000, 2019, "img/Honda_Civic.png");
+const coche3 = new Coche("Ford", "Mustang", 45000, 2021, "img/Ford_Mustang.png");
+const coche4 = new Coche("Chevrolet", "Camaro", 42000, 2022, "img/Chevrolet_Camaro.png");
+const coche5 = new Coche("Nissan", "Altima", 28000, 2020, "img/Nissan_Altima.png");
+
+// Crear un array llamado listaCoches y agregar las instancias de coche
+const listaCoches = [coche1, coche2, coche3, coche4, coche5];
+
+// Recorrer el array y mostrar cada coche en la consola
+listaCoches.forEach((coche, index) => {
+  console.log(`Coche ${index + 1}:`);
+  console.log(`Marca: ${coche.marca}`);
+  console.log(`Modelo: ${coche.modelo}`);
+  console.log(`Precio: $${coche.precio}`);
+  console.log(`Año de Matriculación: ${coche.anoMatriculacion}`);
+  console.log(`URL de Foto: ${coche.urlFoto}`);
+  console.log("---------------------");
+});
+    </script>
+</body>
+
+</html>
