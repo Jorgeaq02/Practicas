@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Selección Única de Checkbox</title>
+</head>
+
+<body>
+    <h2>Selecciona un color:</h2>
+    <input type="checkbox" id="rojo" name="color" checked> Rojo
+    <input type="checkbox" id="verde" name="color"> Verde
+    <input type="checkbox" id="azul" name="color"> Azul
+
+    <script>
+        // Obtén una lista de todos los elementos checkbox
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        // Agrega un evento 'change' a cada checkbox
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                // Si el checkbox actual se ha marcado
+                if (this.checked) {
+                    // Desmarca todos los demás checkboxes
+                    checkboxes.forEach(otherCheckbox => {
+                        if (otherCheckbox !== this) {
+                            otherCheckbox.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
