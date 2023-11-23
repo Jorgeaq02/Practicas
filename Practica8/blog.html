@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!--Estilo css. También, como en la página del index.html esta hecho con bootstrap y css para poder hacer la pagina rsponsiva-->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        #menu h1 {
+            margin: 0;
+        }
+
+        #menu a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 20px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+<!--Menú para poder navegador a los datos de los usuarios o a todos los posts registrados de la API-->
+    <div id="menu">
+        <h1>Mi Blog Backend</h1>
+        <a href="#" onclick="mostrar('usuarios')">Usuarios</a>
+        <a href="#" onclick="mostrarTodosLosPosts()">Posts</a> <!-- Cambio en el menú -->
+    </div>
+
+
+
+    <div id="usuarios" style="display: none;">
+        <h2>Tabla de Usuarios</h2>
+        <table id="usuariosTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de usuario</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="usuariosData">
+                <!-- Usuarios -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="posts" style="display: none;">
+        <!-- Contenido de posts.html -->
+        <h2>Tabla de Posts</h2>
+        <table id="postsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Cuerpo</th>
+                </tr>
+            </thead>
+            <tbody id="postsData">
+                <!-- Posts -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="detallesUsuario" style="display: none;">
+        <!-- Contenido del usuario -->
+        <h2>Detalles del Usuario</h2>
+        <table id="detallesUsuarioTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apodo</th>
+                    <th>Email</th>
+                    <th>Calle</th>
+                    <th>Suite</th>
+                    <th>Ciudad</th>
+                    <th>geo-lat</th>
+                    <th>geo-lng</th>
+                    <th>Teléfono</th>
+                    <th>Sitio Web</th>
+                    <th>Nombre de la Compañía</th>
+                    <th>Eslogan</th>
+                    <th>Actividad</th>
+                </tr>
+            </thead>
+            <tbody id="detallesUsuarioData">
+                <!-- Aquí se cargan los detalles del usuario -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+
+        // Función para cambiar entre usuariosy posts
+        function mostrar(id) {
+            var usuarios = document.getElementById('usuarios');
+            var posts = document.getElementById('posts');
+            var detallesUsuario = document.getElementById('detallesUsuario');
+
+            if (id === 'usuarios') {
+                usuarios.style.display = 'block';
+                posts.style.display = 'none';
+                detallesUsuario.style.display = 'none';
+                cargarUsuarios();
+            } else if (id === 'posts') {
+                usuarios.style.display = 'none';
+                posts.style.display = 'block';
+                detallesUsuario.style.display = 'none';
+                cargarPosts(); // Cargar los posts
+            }
+        }
+
+        // Función para cargar y mostrar los detalles del usuario
+        function mostrarDetallesUsuario(userId) {
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+                .then(response => response.json())
+                .then(usuario => {
+                    var detallesUsuarioData = document.getElementById('detallesUsuarioData');
+                    detallesUsuarioData.innerHTML = '';
+
+                    var row = document.createElement('tr');
+                    row.innerHTML = `
+                <td>${usuario.id}</td>
+                <td>${usuario.name}</td>
+                <td>${usuario.username}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.address.street}</td>
+                <td>${usuario.address.suite}</td>
+                <td>${usuario.address.city}</td>
+                <td>${usuario.address.geo.lat}</td> 
+                <td>${usuario.address.geo.lng}</td>
+                <td>${usuario.phone}</td>
+                <td>${usuario.website}</td>
+                <td>${usuario.company.name}</td>
+                <td>${usuario.company.catchPhrase}</td>
+                <td>${usuario.company.bs}</td>
+            `;
+                    detallesUsuarioData.appendChild(row);
+
+                    // Mostrar o no los detalles del usuario 
+                    document.getElementById('usuarios').style.display = 'none';
+                    document.getElementById('posts').style.display = 'none';
+                    document.getElementById('detallesUsuario').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error al cargar detalles del usuario:', error);
+                });
+        }
+
+        function cargarUsuarios() {
+            fetch('https://jsonplaceholder.typicode.com/users')
+                .then(response => response.json())
+                .then(data => {
+                    var usuariosData = document.getElementById('usuariosData');
+                    usuariosData.innerHTML = '';
+                    data.forEach(usuario => {
+                        var row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><a href="#" onclick="mostrarDetallesUsuario(${usuario.id})">${usuario.id}</a></td>
+                            <td>${usuario.username}</td>
+                            <td>${usuario.email}</td>
+                            <td><a href="#" onclick="cargarPosts(${usuario.id})">Mostrar Posts</a></td>
+                        `;
+                        usuariosData.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar usuarios:', error);
+                });
+        }
+
+        // Función para cargar los posts de un usuario
+        function cargarPosts(userId) {
+            fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    var postsData = document.getElementById('postsData');
+                    postsData.innerHTML = '';
+                    data.forEach(post => {
+                        var row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${post.id}</td>
+                            <td>${post.title}</td>
+                            <td>${post.body}</td>
+                        `;
+                        postsData.appendChild(row);
+                    });
+                    // Mostrar o no los posts
+                    document.getElementById('usuarios').style.display = 'none';
+                    document.getElementById('posts').style.display = 'block';
+                    document.getElementById('detallesUsuario').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error al cargar posts:', error);
+                });
+        }
+
+        function mostrarTodosLosPosts() {
+            fetch('https://jsonplaceholder.typicode.com/posts')
+                .then(response => response.json())
+                .then(data => {
+                    var postsData = document.getElementById('postsTable');
+                    postsData.innerHTML = '';
+                    data.forEach(post => {
+                        var row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${post.id}</td>
+                            <td>${post.title}</td>
+                            <td>${post.body}</td>
+                        `;
+                        postsData.appendChild(row);
+                    });
+                    document.getElementById('usuarios').style.display = 'none';
+                    document.getElementById('posts').style.display = 'block';
+                    document.getElementById('detallesUsuario').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error al cargar todos los posts:', error);
+                });
+        }
+
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
